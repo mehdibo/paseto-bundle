@@ -22,13 +22,13 @@ class PasetoBuilderFactoryTest extends TestCase
 
     public function testLocalPasetoFactory(): void
     {
-        $key = random_bytes(32);
+        $key = new SymmetricKey(random_bytes(32));
         $builder = PasetoBuilderFactory::localPasetoFactory($key)->setClaims(['test' => 'value']);
         $this->assertInstanceOf(LocalPasetoBuilder::class, $builder);
 
         $rawToken = $builder->toString();
 
-        $this->parser->setKey(new SymmetricKey($key));
+        $this->parser->setKey($key);
 
         $token = $this->parser->parse($rawToken);
         $this->assertEquals(['test' => 'value'], $token->getClaims());
@@ -36,14 +36,13 @@ class PasetoBuilderFactoryTest extends TestCase
 
     public function testPublicPasetoFactory(): void
     {
-        $key = sodium_crypto_sign_keypair();
+        $key = new AsymmetricSecretKey(sodium_crypto_sign_keypair());
         $builder = PasetoBuilderFactory::publicPasetoFactory($key)->setClaims(['test' => 'value']);
         $this->assertInstanceOf(PublicPasetoBuilder::class, $builder);
 
         $rawToken = $builder->toString();
 
-        $privateKey = new AsymmetricSecretKey($key);
-        $this->parser->setKey($privateKey->getPublicKey());
+        $this->parser->setKey($key->getPublicKey());
 
         $token = $this->parser->parse($rawToken);
         $this->assertEquals(['test' => 'value'], $token->getClaims());

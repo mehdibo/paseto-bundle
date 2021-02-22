@@ -4,21 +4,19 @@ namespace Mehdibo\Bundle\PasetoBundle\Factories;
 
 use Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoBuilder;
 use Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoBuilder;
-use ParagonIE\Paseto\Keys\Version2\AsymmetricSecretKey;
-use ParagonIE\Paseto\Keys\Version2\SymmetricKey;
+use ParagonIE\Paseto\Keys\AsymmetricSecretKey;
+use ParagonIE\Paseto\Keys\SymmetricKey;
 
 class PasetoBuilderFactory
 {
 
-    public static function localPasetoFactory(string $symmetricKey): LocalPasetoBuilder
+    public static function localPasetoFactory(SymmetricKey $symmetricKey): LocalPasetoBuilder
     {
-        $key = new SymmetricKey($symmetricKey);
-        return (new LocalPasetoBuilder())->setKey($key, true);
+        return (new LocalPasetoBuilder())->setKey($symmetricKey, true);
     }
 
-    public static function publicPasetoFactory(string $asymmetricKey): PublicPasetoBuilder
+    public static function publicPasetoFactory(AsymmetricSecretKey $asymmetricKey): PublicPasetoBuilder
     {
-        $key = new AsymmetricSecretKey($asymmetricKey);
-        return (new PublicPasetoBuilder())->setKey($key, true);
+        return (new PublicPasetoBuilder())->setKey($asymmetricKey, true);
     }
 }
