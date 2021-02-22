@@ -14,7 +14,8 @@
         "symfony"
     ],
     "require": {
-        "php": "^7.4|^8.0"
+        "php": "^7.4|^8.0",
+        "symfony/framework-bundle": "^5.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
