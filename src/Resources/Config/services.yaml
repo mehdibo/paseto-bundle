@@ -7,4 +7,4 @@ services:
   Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoBuilder:
     factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\PasetoBuilderFactory', 'publicPasetoFactory' ]
     arguments:
-      $symmetricKey: "%mehdibo_paseto.secret_keys.asymmetric_key%"
+      $asymmetricKey: "%mehdibo_paseto.secret_keys.asymmetric_key%"
