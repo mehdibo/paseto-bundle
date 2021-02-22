@@ -2,6 +2,9 @@ services:
 
   Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoBuilder: "@mehdibo_paseto.local_builder"
   Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoBuilder: "@mehdibo_paseto.public_builder"
+  ParagonIE\Paseto\Keys\SymmetricKey: "@mehdibo_paseto.symmetric_key"
+  ParagonIE\Paseto\Keys\AsymmetricSecretKey: "@mehdibo_paseto.asymmetric_secret_key"
+  ParagonIE\Paseto\Keys\AsymmetricPublicKey: "@mehdibo_paseto.asymmetric_public_key"
 
   mehdibo_paseto.local_builder:
     class: Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoBuilder
@@ -14,3 +17,21 @@ services:
     factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\PasetoBuilderFactory', 'publicPasetoFactory' ]
     arguments:
       $asymmetricKey: "%mehdibo_paseto.secret_keys.asymmetric_key%"
+
+  mehdibo_paseto.symmetric_key:
+    class: ParagonIE\Paseto\Keys\SymmetricKey
+    factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\KeysFactory', 'symmetricKeyFactory' ]
+    arguments:
+      $key: "%mehdibo_paseto.secret_keys.symmetric_key%"
+
+  mehdibo_paseto.asymmetric_secret_key:
+    class: ParagonIE\Paseto\Keys\AsymmetricSecretKey
+    factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\KeysFactory', 'asymmetricSecretKeyFactory' ]
+    arguments:
+      $key: "%mehdibo_paseto.secret_keys.asymmetric_key%"
+
+  mehdibo_paseto.asymmetric_public_key:
+    class: ParagonIE\Paseto\Keys\AsymmetricPublicKey
+    factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\KeysFactory', 'asymmetricPublicKeyFactory' ]
+    arguments:
+      $key: "%mehdibo_paseto.secret_keys.asymmetric_key%"
