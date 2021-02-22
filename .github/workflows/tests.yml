@@ -1,0 +1,49 @@
+name: CI tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['7.4', '8.0']
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Print PHP version
+        run: php -v
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Validate composer.json
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --optimize-autoloader --no-progress --no-interaction --prefer-dist
+
+      - name: Run tests
+        run: vendor/bin/phpunit --testdox
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse --level 8 --no-interaction --no-progress src tests
+
+      - name: Run PHPCS
+        run: vendor/bin/phpcs src tests --standard=psr2 -s

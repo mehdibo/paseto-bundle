@@ -1,0 +1,22 @@
+{
+    "name": "mehdibo/paseto-bundle",
+    "description": "A Bundle to use Paseto tokens",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mehdi Bounya",
+            "email": "mehdi.bounya@gmail.com"
+        }
+    ],
+    "keywords": [
+        "paseto",
+        "symfony"
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "phpstan/phpstan": "^0.12.76",
+        "squizlabs/php_codesniffer": "^3.5"
+    }
+}
