@@ -3,7 +3,6 @@
 
 namespace Mehdibo\Bundle\PasetoBundle\Services;
 
-
 use ParagonIE\Paseto\Builder;
 use ParagonIE\Paseto\JsonToken;
 use ParagonIE\Paseto\ProtocolInterface;
