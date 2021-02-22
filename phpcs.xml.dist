@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" colors="true" bootstrap="vendor/autoload.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage processUncoveredFiles="true">
-    <include>
-      <directory suffix=".php">src</directory>
-    </include>
-  </coverage>
-  <php>
-    <ini name="error_reporting" value="-1"/>
-    <server name="SHELL_VERBOSITY" value="-1"/>
-  </php>
-  <testsuites>
-    <testsuite name="Project Test Suite">
-      <directory>tests</directory>
-    </testsuite>
-  </testsuites>
-</phpunit>
+
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
+  <arg name="basepath" value="."/>
+  <arg name="cache" value=".phpcs-cache"/>
+  <arg name="colors"/>
+  <arg name="extensions" value="php"/>
+
+  <rule ref="PSR2"/>
+
+  <file>src/</file>
+  <file>tests/</file>
+
+</ruleset>
