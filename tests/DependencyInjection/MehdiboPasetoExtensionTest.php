@@ -20,18 +20,20 @@ class MehdiboPasetoExtensionTest extends TestCase
 
     public function testLoadValidConfig(): void
     {
-        $randomBytes = random_bytes(32);
+        $key = bin2hex(random_bytes(32));
         $configs = [
             'mehdibo_paseto' => [
                 'secret_keys' => [
-                    'symmetric_key' => bin2hex($randomBytes),
-                    'asymmetric_key' => bin2hex($randomBytes),
+                    'symmetric_key' => $key,
+                    'asymmetric_key' => $key,
                 ]
             ]
         ];
         $this->extension->load($configs, $this->container);
         $this->assertTrue($this->container->hasParameter('mehdibo_paseto.secret_keys.symmetric_key'));
         $this->assertTrue($this->container->hasParameter('mehdibo_paseto.secret_keys.asymmetric_key'));
+        $this->assertEquals(hex2bin($key), $this->container->getParameter('mehdibo_paseto.secret_keys.symmetric_key'));
+        $this->assertEquals(hex2bin($key), $this->container->getParameter('mehdibo_paseto.secret_keys.asymmetric_key'));
     }
 
     /**
