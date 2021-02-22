@@ -1,6 +1,6 @@
 <?php
 
-namespace Mehdibo\Bundle\PasetoBundle\Tests;
+namespace Mehdibo\Bundle\PasetoBundle\Tests\Factories;
 
 use Mehdibo\Bundle\PasetoBundle\Factories\PasetoBuilderFactory;
 use Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoBuilder;
