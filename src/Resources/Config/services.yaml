@@ -1,0 +1,5 @@
+services:
+  Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoBuilder:
+    factory: [ 'Mehdibo\Bundle\PasetoBundle\Services\PasetoBuilderFactory', 'localPasetoFactory' ]
+    arguments:
+      $symmetricKey: "%mehdibo_paseto.secret_keys.symmetric_key%"
