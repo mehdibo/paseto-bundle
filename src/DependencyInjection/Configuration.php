@@ -75,8 +75,8 @@ final class Configuration implements ConfigurationInterface
                                 sprintf(
                                     "'%s' must be %d or %d bytes long, %d found",
                                     $paramKey,
-                                    \SODIUM_CRYPTO_SIGN_SECRETKEYBYTES,
                                     \SODIUM_CRYPTO_SIGN_SEEDBYTES,
+                                    \SODIUM_CRYPTO_SIGN_SECRETKEYBYTES,
                                     $keyLen
                                 )
                             );
