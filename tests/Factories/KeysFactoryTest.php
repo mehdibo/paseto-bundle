@@ -46,18 +46,40 @@ class KeysFactoryTest extends TestCase
         $this->assertEquals($claims, $parsedToken->getClaims());
     }
 
-    public function testAsymmetricKeyFactory(): void
+    public function testAsymmetricSecretKeyFactory(): void
     {
         $claims = [
             'drink_milk' => 'stronk_bonks'
         ];
 
-        $randomBytes = \random_bytes(32);
+        $randomBytes = \sodium_crypto_sign_keypair();
 
         $asymmetricSecretKey = KeysFactory::asymmetricSecretKeyFactory($randomBytes);
-        $asymmetricPublicKey = KeysFactory::asymmetricPublicKeyFactory($randomBytes);
 
         $this->assertInstanceOf(AsymmetricSecretKey::class, $asymmetricSecretKey);
+
+        $token = $this->builder
+            ->setPurpose(Purpose::public())
+            ->setKey($asymmetricSecretKey)
+            ->setClaims($claims)
+            ->toString();
+
+        $parsedToken = $this->parser->setKey($asymmetricSecretKey->getPublicKey())->parse($token);
+
+        $this->assertEquals($claims, $parsedToken->getClaims());
+    }
+
+    public function testAsymmetricPublicKeyFactory(): void
+    {
+        $claims = [
+            'drink_milk' => 'stronk_bonks'
+        ];
+
+        $randomBytes = \sodium_crypto_sign_keypair();
+
+        $asymmetricSecretKey = KeysFactory::asymmetricSecretKeyFactory($randomBytes);
+        $asymmetricPublicKey = KeysFactory::asymmetricPublicKeyFactory($asymmetricSecretKey);
+
         $this->assertInstanceOf(AsymmetricPublicKey::class, $asymmetricPublicKey);
 
         $token = $this->builder
