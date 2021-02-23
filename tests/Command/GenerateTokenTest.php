@@ -68,11 +68,7 @@ class GenerateTokenTest extends TestCase
         $this->assertCount(2, $output);
         $this->assertEmpty($output[1]);
 
-        $parsedToken = (new Parser())
-            ->setPurpose(Purpose::public())
-            ->setAllowedVersions(ProtocolCollection::v2())
-            ->setKey($this->asymmetricSecretKey->getPublicKey())
-            ->parse($output[0]);
+        $parsedToken = $this->getParser($purpose)->parse($output[0]);
 
         $this->assertEmpty($parsedToken->getClaims());
     }
