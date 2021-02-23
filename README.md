@@ -1,5 +1,11 @@
 paseto-bundle
 =============
+[![License](https://poser.pugx.org/mehdibo/paseto-bundle/license)](//packagist.org/packages/mehdibo/paseto-bundle)
+[![Latest Stable Version](https://poser.pugx.org/mehdibo/paseto-bundle/v)](//packagist.org/packages/mehdibo/paseto-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/mehdibo/paseto-bundle/v/unstable)](//packagist.org/packages/mehdibo/paseto-bundle)
+[![Total Downloads](https://poser.pugx.org/mehdibo/paseto-bundle/downloads)](//packagist.org/packages/mehdibo/paseto-bundle)
+[![CI tests](https://github.com/mehdibo/paseto-bundle/actions/workflows/tests.yml/badge.svg)](https://github.com/mehdibo/paseto-bundle/actions/workflows/tests.yml)
+
 PasetoBundle is a Symfony bundle to integrate [Paseto](https://github.com/paragonie/paseto/) into Symfony applications.
 
 - [Installation](#installation)
