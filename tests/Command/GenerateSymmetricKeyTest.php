@@ -20,6 +20,7 @@ class GenerateSymmetricKeyTest extends TestCase
 
         $output = $commandTester->getDisplay();
         $this->assertIsString($output);
+        // 65 = 64 key length + new line
         $this->assertEquals(65, strlen($output));
     }
 
