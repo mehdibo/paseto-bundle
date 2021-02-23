@@ -27,39 +27,48 @@ class KeysFactoryTest extends TestCase
 
     public function testSymmetricKeyFactory(): void
     {
-        $key = random_bytes(32);
-        $symmetricKey = KeysFactory::symmetricKeyFactory($key);
+        $claims = [
+            'drink_milk' => 'stronk_bonks'
+        ];
+
+        $symmetricKey = KeysFactory::symmetricKeyFactory(\random_bytes(32));
 
         $this->assertInstanceOf(SymmetricKey::class, $symmetricKey);
 
-        $this->builder->setPurpose(Purpose::local())->setKey($symmetricKey);
-        $this->builder->setClaims(['test' => 'value']);
+        $token = $this->builder
+            ->setPurpose(Purpose::local())
+            ->setKey($symmetricKey)
+            ->setClaims($claims)
+            ->toString();
 
-        $rawToken = $this->builder->toString();
+        $parsedToken = $this->parser->setKey($symmetricKey)->parse($token);
 
-        $parsedToken = $this->parser->setKey($symmetricKey)->parse($rawToken);
-
-        $this->assertEquals(['test' => 'value'], $parsedToken->getClaims());
+        $this->assertEquals($claims, $parsedToken->getClaims());
     }
 
     public function testAsymmetricKeyFactory(): void
     {
-        $key = random_bytes(32);
+        $claims = [
+            'drink_milk' => 'stronk_bonks'
+        ];
 
-        $asymmetricSecretKey = KeysFactory::asymmetricSecretKeyFactory($key);
-        $asymmetricPublicKey = KeysFactory::asymmetricPublicKeyFactory($key);
+        $randomBytes = \random_bytes(32);
+
+        $asymmetricSecretKey = KeysFactory::asymmetricSecretKeyFactory($randomBytes);
+        $asymmetricPublicKey = KeysFactory::asymmetricPublicKeyFactory($randomBytes);
 
         $this->assertInstanceOf(AsymmetricSecretKey::class, $asymmetricSecretKey);
         $this->assertInstanceOf(AsymmetricPublicKey::class, $asymmetricPublicKey);
 
-        $this->builder->setPurpose(Purpose::public())->setKey($asymmetricSecretKey);
-        $this->builder->setClaims(['test' => 'value']);
+        $token = $this->builder
+            ->setPurpose(Purpose::public())
+            ->setKey($asymmetricSecretKey)
+            ->setClaims($claims)
+            ->toString();
 
-        $rawToken = $this->builder->toString();
+        $parsedToken = $this->parser->setKey($asymmetricPublicKey)->parse($token);
 
-        $parsedToken = $this->parser->setKey($asymmetricPublicKey)->parse($rawToken);
-
-        $this->assertEquals(['test' => 'value'], $parsedToken->getClaims());
+        $this->assertEquals($claims, $parsedToken->getClaims());
     }
 
 }
