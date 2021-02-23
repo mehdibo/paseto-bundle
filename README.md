@@ -2,6 +2,14 @@ paseto-bundle
 =============
 PasetoBundle is a Symfony bundle to integrate [Paseto](https://github.com/paragonie/paseto/) into Symfony applications.
 
+- [Installation](#installation)
+  - [Install bundle](#step-1-install-bundle)
+  - [Configuration](#step-2-configuration)
+- [Usage](#installation)
+  - [Creating Paseto tokens](#creating-paseto-tokens)
+  - [Decoding Paseto tokens](#decoding-paseto-tokens)
+  - [Commands](#commands)
+
 Installation
 ============
 
@@ -139,4 +147,13 @@ class TokensController extends AbstractController
         return new JsonResponse($token->getClaims());
     }
 }
+```
+
+### Commands
+The bundle provides some commands to help you use Paseto tokens.
+
+```shell
+./bin/console mehdibo:paseto:generate-symmetric  # Generate a symmetric key
+./bin/console mehdibo:paseto:generate-asymmetric # Generate a asymmetric keys
+./bin/console mehdibo:paseto:generate-token      # Generate a Paseto token
 ```
