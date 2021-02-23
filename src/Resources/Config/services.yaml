@@ -35,3 +35,6 @@ services:
     factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\KeysFactory', 'asymmetricPublicKeyFactory' ]
     arguments:
       $key: "%mehdibo_paseto.secret_keys.asymmetric_key%"
+
+  Mehdibo\Bundle\PasetoBundle\Command\GenerateSymmetricKey:
+    tags: ['console.command']
