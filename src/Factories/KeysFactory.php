@@ -21,9 +21,8 @@ class KeysFactory
         return new AsymmetricSecretKey($key);
     }
 
-    public static function asymmetricPublicKeyFactory(string $key): AsymmetricPublicKey
+    public static function asymmetricPublicKeyFactory(AsymmetricSecretKey $asymmetricSecretKey): AsymmetricPublicKey
     {
-        $asymmetricSecretKey = new AsymmetricSecretKey($key);
         return $asymmetricSecretKey->getPublicKey();
     }
 
