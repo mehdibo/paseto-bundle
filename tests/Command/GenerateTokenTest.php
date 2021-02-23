@@ -54,10 +54,13 @@ class GenerateTokenTest extends TestCase
         $this->assertEmpty($parsedToken->getClaims());
     }
 
-    public function testCommandGeneratesTokenWithPublicPurpose(): void
+    /**
+     * @dataProvider keyTypesDataProvider
+     */
+    public function testCommandGeneratesTokenWithPurpose(string $purpose): void
     {
         $options = [
-            "--purpose" => "public"
+            "--purpose" => $purpose,
         ];
         $this->assertEquals(Command::SUCCESS, $this->commandTester->execute($options));
 
