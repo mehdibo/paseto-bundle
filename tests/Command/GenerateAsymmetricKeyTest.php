@@ -45,7 +45,11 @@ class GenerateAsymmetricKeyTest extends TestCase
         $this->commandTester->execute([]);
         $output = explode("\n", $this->commandTester->getDisplay());
 
-        $secretKey = new AsymmetricSecretKey(\hex2bin($output[1]));
+        $decodedKey = \hex2bin($output[1]);
+        if ($decodedKey === false) {
+            $this->fail("Failed decoding key");
+        }
+        $secretKey = new AsymmetricSecretKey($decodedKey);
         $publicKey = $secretKey->getPublicKey();
 
         $token = (PasetoBuilderFactory::publicPasetoFactory($secretKey))

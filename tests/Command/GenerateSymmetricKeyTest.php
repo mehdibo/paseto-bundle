@@ -39,7 +39,11 @@ class GenerateSymmetricKeyTest extends TestCase
         $this->commandTester->execute([]);
         $output = explode("\n", $this->commandTester->getDisplay());
 
-        $secretKey = new SymmetricKey(\hex2bin($output[0]));
+        $decodedKey = \hex2bin($output[0]);
+        if ($decodedKey === false) {
+            $this->fail("Failed decoding key");
+        }
+        $secretKey = new SymmetricKey($decodedKey);
 
         $token = (PasetoBuilderFactory::localPasetoFactory($secretKey))
             ->setClaims($claims)
