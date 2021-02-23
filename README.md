@@ -101,4 +101,42 @@ class TokensController extends AbstractController
 
 ### Decoding Paseto tokens
 
-TODO
+You can use the bundle's services to decode tokens
+
+```php
+
+// For parsing local tokens
+$localParser = new \Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoParser();
+// For parsing public tokens
+$publicParser = new \Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoParser();
+```
+
+From a controller:
+
+```php
+namespace App\Controller;
+
+use Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoParser;
+use Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoParser;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+
+class TokensController extends AbstractController
+{
+
+    #[Route('/public/decode', name: 'public_decode')]
+    public function publicDecode(PublicPasetoParser $parser): JsonResponse
+    {
+        $token = $parser->parse("PUBLIC_TOKEN_HERE");
+        return new JsonResponse($token->getClaims());
+    }
+
+    #[Route('/local/decode', name: 'local_decode')]
+    public function localDecode(LocalPasetoParser $parser): JsonResponse
+    {
+        $token = $parser->parse("LOCAL_TOKEN_HERE");
+        return new JsonResponse($token->getClaims());
+    }
+}
+```
