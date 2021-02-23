@@ -2,9 +2,23 @@ services:
 
   Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoBuilder: "@mehdibo_paseto.local_builder"
   Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoBuilder: "@mehdibo_paseto.public_builder"
+  Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoParser: "@mehdibo_paseto.local_parser"
+  Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoParser: "@mehdibo_paseto.public_parser"
   ParagonIE\Paseto\Keys\SymmetricKey: "@mehdibo_paseto.symmetric_key"
   ParagonIE\Paseto\Keys\AsymmetricSecretKey: "@mehdibo_paseto.asymmetric_secret_key"
   ParagonIE\Paseto\Keys\AsymmetricPublicKey: "@mehdibo_paseto.asymmetric_public_key"
+
+  mehdibo_paseto.local_parser:
+    class: Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoParser
+    factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\ParserFactory', 'localParser' ]
+    arguments:
+      $symmetricKey: "@mehdibo_paseto.symmetric_key"
+
+  mehdibo_paseto.public_parser:
+    class: Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoParser
+    factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\ParserFactory', 'publicParser' ]
+    arguments:
+      $publicKey: "@mehdibo_paseto.asymmetric_public_key"
 
   mehdibo_paseto.local_builder:
     class: Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoBuilder
