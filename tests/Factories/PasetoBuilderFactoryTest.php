@@ -22,29 +22,35 @@ class PasetoBuilderFactoryTest extends TestCase
 
     public function testLocalPasetoFactory(): void
     {
-        $key = new SymmetricKey(random_bytes(32));
-        $builder = PasetoBuilderFactory::localPasetoFactory($key)->setClaims(['test' => 'value']);
+        $claims = [
+            'drink_milk' => 'stronk_bonks'
+        ];
+
+        $symmetricKey = new SymmetricKey(\random_bytes(32));
+        $builder = PasetoBuilderFactory::localPasetoFactory($symmetricKey);
         $this->assertInstanceOf(LocalPasetoBuilder::class, $builder);
 
-        $rawToken = $builder->toString();
+        $token = $builder->setClaims($claims)->toString();
 
-        $this->parser->setKey($key);
+        $parsedToken = $this->parser->setKey($symmetricKey)->parse($token);
 
-        $token = $this->parser->parse($rawToken);
-        $this->assertEquals(['test' => 'value'], $token->getClaims());
+        $this->assertEquals($claims, $parsedToken->getClaims());
     }
 
     public function testPublicPasetoFactory(): void
     {
-        $key = new AsymmetricSecretKey(sodium_crypto_sign_keypair());
-        $builder = PasetoBuilderFactory::publicPasetoFactory($key)->setClaims(['test' => 'value']);
+        $claims = [
+            'drink_milk' => 'stronk_bonks'
+        ];
+
+        $secretKey = new AsymmetricSecretKey(sodium_crypto_sign_keypair());
+        $builder = PasetoBuilderFactory::publicPasetoFactory($secretKey);
         $this->assertInstanceOf(PublicPasetoBuilder::class, $builder);
 
-        $rawToken = $builder->toString();
+        $token = $builder->setClaims($claims)->toString();
 
-        $this->parser->setKey($key->getPublicKey());
+        $parsedToken = $this->parser->setKey($secretKey->getPublicKey())->parse($token);
 
-        $token = $this->parser->parse($rawToken);
-        $this->assertEquals(['test' => 'value'], $token->getClaims());
+        $this->assertEquals($claims, $parsedToken->getClaims());
     }
 }
