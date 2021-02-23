@@ -184,6 +184,40 @@ class GenerateTokenTest extends TestCase
         $this->assertEquals(["jti" => "jti_here"], $parsedToken->getClaims());
     }
 
+    /**
+     * @dataProvider keyTypesDataProvider
+     */
+    public function testCommandGeneratesTokenWithClaims(string $purpose): void
+    {
+        $options = [
+            "--claim" => ["key", "val", "key2", "val2"],
+            "--purpose" => $purpose,
+        ];
+        $this->assertEquals(Command::SUCCESS, $this->commandTester->execute($options));
+
+        $output = explode("\n", $this->commandTester->getDisplay());
+        $this->assertCount(2, $output);
+        $this->assertEmpty($output[1]);
+
+        $parsedToken = $this->getParser($purpose)->parse($output[0]);
+
+        $this->assertEquals(["key" => "val", "key2" => "val2"], $parsedToken->getClaims());
+    }
+
+    /**
+     * @dataProvider keyTypesDataProvider
+     */
+    public function testCommandGeneratesTokenWithOddClaims(string $purpose): void
+    {
+        $options = [
+            "--claim" => ["key", "val", "key2"],
+            "--purpose" => $purpose,
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage("Purpose invalid, expected 'public' or 'local', found 'invalid_purpose'");
+        $this->commandTester->execute($options);
+    }
+
     private function getParser(string $purpose): Parser
     {
         $parser = new Parser();

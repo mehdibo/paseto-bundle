@@ -75,6 +75,12 @@ HELP
                 InputOption::VALUE_OPTIONAL,
                 "Add JTI (JWT ID claim)",
                 ''
+            )->addOption(
+                "claim",
+                null,
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
+                "Custom claims, example --claim claim_key --claim claim_value",
+                []
             );
     }
 
@@ -131,6 +137,24 @@ HELP
             }
             if ($optionValue !== "") {
                 $builder->{$params['setter']}($optionValue);
+            }
+        }
+
+        /**
+         * @var string[] $claims
+         */
+        $claims = (array) $input->getOption("claim");
+        if (!empty($claims)) {
+            $len = count($claims);
+            if ($len % 2 !== 0) {
+                throw new \RuntimeException(
+                    sprintf("Invalid claims, number of flags must be a pair, %d given", $len)
+                );
+            }
+            for ($i = 0; $i < $len; $i += 2) {
+                $key = $claims[$i];
+                $val = $claims[$i+1];
+                $builder->set($key, $val);
             }
         }
 
