@@ -11,7 +11,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class GenerateSymmetricKeyTest extends TestCase
 {
 
-    public function testExecute(): void
+    public function testCommandShowsKey(): void
     {
         $command = new GenerateSymmetricKey();
         $commandTester = new CommandTester($command);

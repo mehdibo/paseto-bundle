@@ -12,7 +12,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class GenerateAsymmetricKeyTest extends TestCase
 {
 
-    public function testExecute(): void
+    public function testCommandShowsKeys(): void
     {
         $command = new GenerateAsymmetricKey();
         $commandTester = new CommandTester($command);
