@@ -43,7 +43,7 @@ class PasetoBuilderFactoryTest extends TestCase
             'drink_milk' => 'stronk_bonks'
         ];
 
-        $secretKey = new AsymmetricSecretKey(sodium_crypto_sign_keypair());
+        $secretKey = new AsymmetricSecretKey(\sodium_crypto_sign_keypair());
         $builder = PasetoBuilderFactory::publicPasetoFactory($secretKey);
         $this->assertInstanceOf(PublicPasetoBuilder::class, $builder);
 
