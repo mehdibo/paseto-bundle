@@ -97,44 +97,41 @@ HELP
          */
         $builder = ($purpose === "local") ? $this->localBuilder : $this->publicBuilder;
 
-        /**
-         * @var string $aud
-         */
-        $aud = $input->getOption('aud');
-        if ($aud !== "") {
-            $builder->setAudience($aud);
-        }
+        $options = [
+            'aud' => [
+                'setter' => 'setAudience',
+            ],
+            'expires_at' => [
+                'setter' => 'setExpiration',
+                'prepValue' => function (string $optionValue) {
+                    return (new \DateTime())->add(new \DateInterval($optionValue));
+                }
+            ],
+            'issued_at' => [
+                'setter' => 'setIssuedAt',
+                'prepValue' => function (string $optionValue) {
+                    return new \DateTime($optionValue);
+                }
+            ],
+            'issuer' => [
+                'setter' => 'setIssuer',
+            ],
+            'jti' => [
+                'setter' => 'setJti',
+            ],
+        ];
 
-        /**
-         * @var string $expiresAtInterval
-         */
-        $expiresAtInterval = $input->getOption('expires_at');
-        if ($expiresAtInterval !== '') {
-            $builder->setExpiration((new \DateTime())->add(new \DateInterval($expiresAtInterval)));
-        }
-
-        /**
-         * @var string $issuedAt
-         */
-        $issuedAt = $input->getOption('issued_at');
-        if ($issuedAt !== '') {
-            $builder->setIssuedAt(new \DateTime($issuedAt));
-        }
-
-        /**
-         * @var string $issuer
-         */
-        $issuer = $input->getOption('issuer');
-        if ($issuer !== '') {
-            $builder->setIssuer($issuer);
-        }
-
-        /**
-         * @var string $jti
-         */
-        $jti = $input->getOption('jti');
-        if ($jti !== '') {
-            $builder->setJti($jti);
+        foreach ($options as $optionName => $params) {
+            /**
+             * @var string $optionValue
+             */
+            $optionValue = $input->getOption($optionName);
+            if (isset($params['prepValue']) && \is_callable($params['prepValue']) && $optionValue !== "") {
+                $optionValue = $params['prepValue']($optionValue);
+            }
+            if ($optionValue !== "") {
+                $builder->{$params['setter']}($optionValue);
+            }
         }
 
         return $builder;
