@@ -65,6 +65,8 @@ return [
 Usage
 ============
 
+You can view the [`ExampleController`](./ExampleController.php) for a usage example.
+
 ### Creating Paseto tokens
 
 You can use the bundle's services to create tokens.
