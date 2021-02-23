@@ -46,4 +46,4 @@ jobs:
         run: vendor/bin/phpstan analyse --no-interaction --no-progress
 
       - name: Run PHPCS
-        run: vendor/bin/phpcs src tests --standard=psr2 -s
+        run: vendor/bin/phpcs
