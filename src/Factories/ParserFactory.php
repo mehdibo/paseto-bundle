@@ -3,7 +3,6 @@
 
 namespace Mehdibo\Bundle\PasetoBundle\Factories;
 
-
 use Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoParser;
 use Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoParser;
 use ParagonIE\Paseto\Keys\AsymmetricPublicKey;

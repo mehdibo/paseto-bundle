@@ -3,7 +3,6 @@
 
 namespace Mehdibo\Bundle\PasetoBundle\Tests\Factories;
 
-
 use Mehdibo\Bundle\PasetoBundle\Factories\ParserFactory;
 use Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoParser;
 use Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoParser;
@@ -65,5 +64,4 @@ class ParserFactoryTest extends TestCase
 
         $this->assertEquals($claims, $parsedToken->getClaims());
     }
-
 }
