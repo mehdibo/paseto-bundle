@@ -11,7 +11,9 @@
     ],
     "keywords": [
         "paseto",
-        "symfony"
+        "symfony",
+        "bundle",
+        "symfony-bundle"
     ],
     "require": {
         "php": "^7.4|^8.0",
