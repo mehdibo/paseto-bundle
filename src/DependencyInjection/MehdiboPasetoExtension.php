@@ -35,7 +35,7 @@ class MehdiboPasetoExtension extends Extension
 
         $loader = new YamlFileLoader(
             $container,
-            new FileLocator(realpath(__DIR__.'/../Resources/Config'))
+            new FileLocator(__DIR__.'/../Resources/Config')
         );
         $loader->load('services.yaml');
 
