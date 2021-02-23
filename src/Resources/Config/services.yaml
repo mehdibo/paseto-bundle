@@ -38,3 +38,6 @@ services:
 
   Mehdibo\Bundle\PasetoBundle\Command\GenerateSymmetricKey:
     tags: ['console.command']
+
+  Mehdibo\Bundle\PasetoBundle\Command\GenerateAsymmetricKey:
+    tags: [ 'console.command' ]
