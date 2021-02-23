@@ -81,6 +81,12 @@ HELP
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
                 "Custom claims, example --claim claim_key --claim claim_value",
                 []
+            )->addOption(
+                "footer",
+                null,
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
+                "Footer data, example --footer key --claim value",
+                []
             );
     }
 
@@ -158,6 +164,25 @@ HELP
             }
         }
 
+        /**
+         * @var string[] $footer
+         */
+        $footer = (array) $input->getOption("footer");
+        $footerData = [];
+        if (!empty($footer)) {
+            $len = count($footer);
+            if ($len % 2 !== 0) {
+                throw new \RuntimeException(
+                    sprintf("Invalid footer, number of flags must be a pair, %d given", $len)
+                );
+            }
+            for ($i = 0; $i < $len; $i += 2) {
+                $footerData[$footer[$i]] = $footer[$i+1];
+            }
+        }
+        if (!empty($footerData)) {
+            $builder->setFooterArray($footerData);
+        }
         return $builder;
     }
 

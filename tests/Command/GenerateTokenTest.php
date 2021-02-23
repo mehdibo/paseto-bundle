@@ -214,7 +214,41 @@ class GenerateTokenTest extends TestCase
             "--purpose" => $purpose,
         ];
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage("Purpose invalid, expected 'public' or 'local', found 'invalid_purpose'");
+        $this->expectExceptionMessage("Invalid claims, number of flags must be a pair, 3 given");
+        $this->commandTester->execute($options);
+    }
+
+    /**
+     * @dataProvider keyTypesDataProvider
+     */
+    public function testCommandGeneratesTokenWithFooter(string $purpose): void
+    {
+        $options = [
+            "--footer" => ["key", "val", "key2", "val2"],
+            "--purpose" => $purpose,
+        ];
+        $this->assertEquals(Command::SUCCESS, $this->commandTester->execute($options));
+
+        $output = explode("\n", $this->commandTester->getDisplay());
+        $this->assertCount(2, $output);
+        $this->assertEmpty($output[1]);
+
+        $parsedToken = $this->getParser($purpose)->parse($output[0]);
+
+        $this->assertEquals(["key" => "val", "key2" => "val2"], $parsedToken->getFooterArray());
+    }
+
+    /**
+     * @dataProvider keyTypesDataProvider
+     */
+    public function testCommandGeneratesTokenWithOddFooter(string $purpose): void
+    {
+        $options = [
+            "--footer" => ["key", "val", "key2"],
+            "--purpose" => $purpose,
+        ];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage("Invalid footer, number of flags must be a pair, 3 given");
         $this->commandTester->execute($options);
     }
 
