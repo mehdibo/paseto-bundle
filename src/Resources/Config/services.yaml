@@ -41,3 +41,7 @@ services:
 
   Mehdibo\Bundle\PasetoBundle\Command\GenerateAsymmetricKey:
     tags: [ 'console.command' ]
+
+  Mehdibo\Bundle\PasetoBundle\Command\GenerateToken:
+    tags: [ 'console.command' ]
+    arguments: ['@mehdibo_paseto.local_builder', '@mehdibo_paseto.public_builder']
