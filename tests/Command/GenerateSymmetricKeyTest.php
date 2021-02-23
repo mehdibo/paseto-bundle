@@ -33,19 +33,24 @@ class GenerateSymmetricKeyTest extends TestCase
 
     public function testCommandGeneratesValidKeys(): void
     {
+        $claims = [
+            'drink_milk' => 'stronk_bonks'
+        ];
+
         $this->commandTester->execute([]);
         $output = explode("\n", $this->commandTester->getDisplay());
 
-        $symmetricKey = new SymmetricKey(\hex2bin($output[0]));
+        $secretKey = new SymmetricKey(\hex2bin($output[0]));
 
-        $builder = PasetoBuilderFactory::localPasetoFactory($symmetricKey);
-        $builder->setClaims(['test' => 'value']);
+        $token = (PasetoBuilderFactory::localPasetoFactory($secretKey))
+            ->setClaims($claims)
+            ->toString();
 
-        // TODO: use parser factory
-        $parser = new Parser();
-        $parser->setKey($symmetricKey);
+        $parsedToken = (new Parser())
+            ->setKey($secretKey)
+            ->parse($token);
 
-        $this->assertEquals(['test' => 'value'], $parser->parse($builder->toString())->getClaims());
+        $this->assertEquals($claims, $parsedToken->getClaims());
     }
 
 }
