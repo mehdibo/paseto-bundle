@@ -13,7 +13,7 @@ class GenerateSymmetricKey extends Command
     /**
      * @var string
      */
-    protected static $defaultName = "mehdibo:paseto:generate-symmetric-key";
+    protected static $defaultName = "mehdibo:paseto:generate-symmetric";
 
     protected function configure(): void
     {
