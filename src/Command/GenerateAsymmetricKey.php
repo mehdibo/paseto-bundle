@@ -3,7 +3,6 @@
 
 namespace Mehdibo\Bundle\PasetoBundle\Command;
 
-
 use ParagonIE\Paseto\Keys\AsymmetricSecretKey;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -60,5 +59,4 @@ HELP
 
         return Command::SUCCESS;
     }
-
 }

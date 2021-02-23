@@ -3,7 +3,6 @@
 
 namespace Mehdibo\Bundle\PasetoBundle\Factories;
 
-
 use ParagonIE\Paseto\Keys\AsymmetricPublicKey;
 use ParagonIE\Paseto\Keys\AsymmetricSecretKey;
 use ParagonIE\Paseto\Keys\SymmetricKey;
@@ -25,5 +24,4 @@ class KeysFactory
     {
         return $asymmetricSecretKey->getPublicKey();
     }
-
 }

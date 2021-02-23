@@ -3,7 +3,6 @@
 
 namespace Mehdibo\Bundle\PasetoBundle\Tests\Command;
 
-
 use Mehdibo\Bundle\PasetoBundle\Command\GenerateToken;
 use Mehdibo\Bundle\PasetoBundle\Factories\KeysFactory;
 use Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoBuilder;
@@ -194,6 +193,9 @@ class GenerateTokenTest extends TestCase
         return $parser;
     }
 
+    /**
+     * @return string[][]
+     */
     public function keyTypesDataProvider(): array
     {
         return [

@@ -3,7 +3,6 @@
 
 namespace Mehdibo\Bundle\PasetoBundle\Command;
 
-
 use Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoBuilder;
 use Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoBuilder;
 use ParagonIE\Paseto\Builder;
@@ -26,8 +25,7 @@ class GenerateToken extends Command
         LocalPasetoBuilder $localBuilder,
         PublicPasetoBuilder $publicBuilder,
         string $name = null
-    )
-    {
+    ) {
         parent::__construct($name);
         $this->localBuilder = $localBuilder;
         $this->publicBuilder = $publicBuilder;
@@ -138,5 +136,4 @@ HELP
         $output->writeln($builder->toString());
         return 0;
     }
-
 }

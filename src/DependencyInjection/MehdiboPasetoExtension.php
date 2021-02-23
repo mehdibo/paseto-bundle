@@ -3,7 +3,6 @@
 
 namespace Mehdibo\Bundle\PasetoBundle\DependencyInjection;
 
-
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -17,8 +16,7 @@ class MehdiboPasetoExtension extends Extension
      */
     private function loadConfigs(string $prefix, array $configs, ContainerBuilder $container): void
     {
-        foreach ($configs as $key => $val)
-        {
+        foreach ($configs as $key => $val) {
             if (\is_array($val)) {
                 $this->loadConfigs($prefix.'.'.$key, $val, $container);
                 continue;

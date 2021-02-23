@@ -17,5 +17,4 @@ class PublicPasetoBuilder extends Builder
         parent::__construct($baseToken, $protocol, $key);
         parent::setPurpose(Purpose::public());
     }
-
 }

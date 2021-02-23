@@ -3,7 +3,6 @@
 
 namespace Mehdibo\Bundle\PasetoBundle\Tests\Factories;
 
-
 use Mehdibo\Bundle\PasetoBundle\Factories\KeysFactory;
 use ParagonIE\Paseto\Builder;
 use ParagonIE\Paseto\Keys\AsymmetricPublicKey;
@@ -92,5 +91,4 @@ class KeysFactoryTest extends TestCase
 
         $this->assertEquals($claims, $parsedToken->getClaims());
     }
-
 }

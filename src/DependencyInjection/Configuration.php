@@ -26,7 +26,8 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function validateKey(string $paramKey, string $value): string {
+    private function validateKey(string $paramKey, string $value): string
+    {
         if (!\ctype_xdigit($value)) {
             throw new InvalidConfigurationException(
                 "'{$paramKey}' must be a hex encoded key"
@@ -77,7 +78,9 @@ final class Configuration implements ConfigurationInterface
                         $paramKey = 'mehdibo_paseto.secret_keys.asymmetric_key';
                         $decoded = $this->validateKey($paramKey, $value);
                         $keyLen = Binary::safeStrlen($decoded);
-                        if ($keyLen !== \SODIUM_CRYPTO_SIGN_SECRETKEYBYTES && $keyLen !== SODIUM_CRYPTO_SIGN_SEEDBYTES) {
+                        if ($keyLen !== \SODIUM_CRYPTO_SIGN_SECRETKEYBYTES &&
+                            $keyLen !== SODIUM_CRYPTO_SIGN_SEEDBYTES
+                        ) {
                             throw new InvalidConfigurationException(
                                 sprintf(
                                     "'%s' must be %d or %d bytes long, %d found",

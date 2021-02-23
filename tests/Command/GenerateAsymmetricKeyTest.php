@@ -3,7 +3,6 @@
 
 namespace Mehdibo\Bundle\PasetoBundle\Tests\Command;
 
-
 use Mehdibo\Bundle\PasetoBundle\Command\GenerateAsymmetricKey;
 use Mehdibo\Bundle\PasetoBundle\Factories\PasetoBuilderFactory;
 use ParagonIE\Paseto\Keys\AsymmetricSecretKey;
@@ -59,5 +58,4 @@ class GenerateAsymmetricKeyTest extends TestCase
 
         $this->assertEquals($claims, $parsedToken->getClaims());
     }
-
 }

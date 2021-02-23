@@ -22,7 +22,7 @@ class GenerateSymmetricKey extends Command
 This command allows you to generate a random 32 bytes key to use for local Paseto tokens
 The key will be printed as a HEX string
 HELP
-);
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -38,5 +38,4 @@ HELP
 
         return Command::SUCCESS;
     }
-
 }

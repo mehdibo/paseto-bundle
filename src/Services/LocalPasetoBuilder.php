@@ -17,5 +17,4 @@ class LocalPasetoBuilder extends Builder
         parent::__construct($baseToken, $protocol, $key);
         parent::setPurpose(Purpose::local());
     }
-
 }

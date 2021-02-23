@@ -2,7 +2,6 @@
 
 namespace Mehdibo\Bundle\PasetoBundle\Tests\Command;
 
-
 use Mehdibo\Bundle\PasetoBundle\Command\GenerateSymmetricKey;
 use Mehdibo\Bundle\PasetoBundle\Factories\PasetoBuilderFactory;
 use ParagonIE\Paseto\Keys\SymmetricKey;
@@ -52,5 +51,4 @@ class GenerateSymmetricKeyTest extends TestCase
 
         $this->assertEquals($claims, $parsedToken->getClaims());
     }
-
 }
