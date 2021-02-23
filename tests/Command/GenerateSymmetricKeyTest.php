@@ -18,10 +18,10 @@ class GenerateSymmetricKeyTest extends TestCase
 
         $this->assertEquals(Command::SUCCESS, $commandTester->execute([]));
 
-        $output = $commandTester->getDisplay();
-        $this->assertIsString($output);
-        // 65 = 64 key length + new line
-        $this->assertEquals(65, strlen($output));
+        $output = explode("\n", $commandTester->getDisplay());
+        $this->assertCount(2, $output);
+        $this->assertEquals(64, \strlen($output[0]));
+        $this->assertEmpty($output[1]);
     }
 
 }
