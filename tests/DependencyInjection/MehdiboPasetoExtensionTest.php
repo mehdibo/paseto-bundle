@@ -70,6 +70,9 @@ class MehdiboPasetoExtensionTest extends TestCase
         $this->extension->load($configs, $this->container);
     }
 
+    /**
+     * @return array<string, string[]>
+     */
     public function invalidSymmetricKeys(): array
     {
         return [
@@ -79,6 +82,9 @@ class MehdiboPasetoExtensionTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, string[]>
+     */
     public function invalidAsymmetricKeys(): array
     {
         return [

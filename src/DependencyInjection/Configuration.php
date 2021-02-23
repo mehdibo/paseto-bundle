@@ -4,6 +4,7 @@ namespace Mehdibo\Bundle\PasetoBundle\DependencyInjection;
 
 use ParagonIE\ConstantTime\Binary;
 use ParagonIE\Paseto\Protocol\Version2;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -15,6 +16,9 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('mehdibo_paseto');
+        /**
+         * @var ArrayNodeDefinition $rootNode
+         */
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode->append($this->createKeysNode());
@@ -38,6 +42,9 @@ final class Configuration implements ConfigurationInterface
     private function createKeysNode(): NodeDefinition
     {
         $treeBuilder = new TreeBuilder('secret_keys');
+        /**
+         * @var NodeDefinition $node
+         */
         $node = $treeBuilder->getRootNode();
 
         $node->isRequired()

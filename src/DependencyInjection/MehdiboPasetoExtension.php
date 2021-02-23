@@ -12,7 +12,10 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 class MehdiboPasetoExtension extends Extension
 {
 
-    private function loadConfigs(string $prefix, array $configs, ContainerBuilder $container)
+    /**
+     * @param array<string, mixed> $configs
+     */
+    private function loadConfigs(string $prefix, array $configs, ContainerBuilder $container): void
     {
         foreach ($configs as $key => $val)
         {
@@ -24,7 +27,10 @@ class MehdiboPasetoExtension extends Extension
         }
     }
 
-    public function load(array $configs, ContainerBuilder $container)
+    /**
+     * @param array<string, mixed> $configs
+     */
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);

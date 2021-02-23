@@ -12,11 +12,15 @@ class PasetoBuilderFactory
 
     public static function localPasetoFactory(SymmetricKey $symmetricKey): LocalPasetoBuilder
     {
-        return (new LocalPasetoBuilder())->setKey($symmetricKey, true);
+        $builder = new LocalPasetoBuilder();
+        $builder->setKey($symmetricKey, true);
+        return $builder;
     }
 
     public static function publicPasetoFactory(AsymmetricSecretKey $asymmetricKey): PublicPasetoBuilder
     {
-        return (new PublicPasetoBuilder())->setKey($asymmetricKey, true);
+        $builder = new PublicPasetoBuilder();
+        $builder->setKey($asymmetricKey);
+        return $builder;
     }
 }
