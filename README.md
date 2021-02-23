@@ -153,7 +153,12 @@ class TokensController extends AbstractController
 The bundle provides some commands to help you use Paseto tokens.
 
 ```shell
-./bin/console mehdibo:paseto:generate-symmetric  # Generate a symmetric key
-./bin/console mehdibo:paseto:generate-asymmetric # Generate a asymmetric keys
-./bin/console mehdibo:paseto:generate-token      # Generate a Paseto token
+mehdibo:paseto:generate-symmetric  # Generate a symmetric key
+mehdibo:paseto:generate-asymmetric # Generate a asymmetric keys
+mehdibo:paseto:generate-token      # Generate a Paseto token
+```
+
+```shell
+$> ./bin/console mehdibo:paseto:generate-token --purpose local --expires_at P01D --claim uid --claim 13 --claim article_id --claim 37
+v2.local.nn7biqHnkvU3JgJdfeVNqHlxsub_QEOsSAeGg2hdEVvPi_lxYwL01dSGjYw43P8PE0zorghJq2S6Czo8ztTxQ_UlSeYqPehXJ498Rk3Y9ouwqj2Z9j0Bk1uSbEBSqXPdr1GeeM0kpPk
 ```
