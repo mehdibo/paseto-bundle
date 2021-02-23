@@ -39,20 +39,25 @@ class GenerateAsymmetricKeyTest extends TestCase
 
     public function testCommandGeneratesValidKeys(): void
     {
+        $claims = [
+            'drink_milk' => 'stronk_bonks'
+        ];
+
         $this->commandTester->execute([]);
         $output = explode("\n", $this->commandTester->getDisplay());
 
         $secretKey = new AsymmetricSecretKey(\hex2bin($output[1]));
         $publicKey = $secretKey->getPublicKey();
 
-        $builder = PasetoBuilderFactory::publicPasetoFactory($secretKey);
-        $builder->setClaims(['test' => 'value']);
+        $token = (PasetoBuilderFactory::publicPasetoFactory($secretKey))
+            ->setClaims($claims)
+            ->toString();
 
-        // TODO: use parser factory
-        $parser = new Parser();
-        $parser->setKey($publicKey);
+        $parsedToken = (new Parser())
+            ->setKey($publicKey)
+            ->parse($token);
 
-        $this->assertEquals(['test' => 'value'], $parser->parse($builder->toString())->getClaims());
+        $this->assertEquals($claims, $parsedToken->getClaims());
     }
 
 }
