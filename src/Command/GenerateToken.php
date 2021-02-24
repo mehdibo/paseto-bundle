@@ -7,9 +7,12 @@ use Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoBuilder;
 use Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoBuilder;
 use ParagonIE\Paseto\Builder;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 
 class GenerateToken extends Command
 {
@@ -192,5 +195,112 @@ HELP
 
         $output->writeln($builder->toString());
         return 0;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function promptKeyPairs(
+        QuestionHelper $helper,
+        InputInterface $input,
+        OutputInterface $output,
+        string $keyPrompt,
+        string $valPrompt
+    ): array {
+        $keyQuestion = new Question($keyPrompt, '');
+        $valQuestion = new Question($valPrompt, '');
+        $values = [];
+        while (true) {
+            $key = (string) $helper->ask($input, $output, $keyQuestion);
+            if ($key === '') {
+                break;
+            }
+            $val = (string) $helper->ask($input, $output, $valQuestion);
+            if ($val === '') {
+                break;
+            }
+            $values[] = $key;
+            $values[] = $val;
+        }
+        return $values;
+    }
+
+    protected function interact(InputInterface $input, OutputInterface $output): void
+    {
+        $prompts = [
+            'purpose' => [
+                'question_class' => ChoiceQuestion::class,
+                'question' => 'Token purpose',
+                'args' => [
+                    ['local', 'public']
+                ],
+            ],
+            'aud' => [
+                'question_class' => Question::class,
+                'question' => 'Audience claim: ',
+                'args' => [
+                    ''
+                ],
+            ],
+            'expires_at' => [
+                'question_class' => Question::class,
+                'question' => 'Expires at: ',
+                'args' => [
+                    ''
+                ],
+            ],
+            'issued_at' => [
+                'question_class' => Question::class,
+                'question' => 'Issued at: ',
+                'args' => [
+                    'now'
+                ],
+            ],
+            'issuer' => [
+                'question_class' => Question::class,
+                'question' => 'Issuer: ',
+                'args' => [
+                    ''
+                ],
+            ],
+            'jti' => [
+                'question_class' => Question::class,
+                'question' => 'JWT ID (JTI): ',
+                'args' => [
+                    ''
+                ],
+            ],
+        ];
+        $helper = new QuestionHelper();
+
+        foreach ($prompts as $optionName => $prompt) {
+            // @phpstan-ignore-next-line
+            $question = new $prompt['question_class']($prompt['question'], ...$prompt['args']);
+            if (isset($prompt['autocomplete'])) {
+                $question->setAutocompleterValues($prompt['autocomplete']);
+            }
+            $value = $helper->ask($input, $output, $question);
+            $input->setOption($optionName, $value);
+        }
+
+        // Add claims
+        $claims = $this->promptKeyPairs(
+            $helper,
+            $input,
+            $output,
+            "Claim key: (Enter to skip)",
+            "Claim value: "
+        );
+        $input->setOption('claim', $claims);
+
+        // Add footer
+        $footer = $this->promptKeyPairs(
+            $helper,
+            $input,
+            $output,
+            "Footer key: (Enter to skip)",
+            "Footer value: "
+        );
+        $input->setOption('footer', $footer);
     }
 }
