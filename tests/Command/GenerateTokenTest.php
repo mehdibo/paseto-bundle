@@ -273,6 +273,46 @@ class GenerateTokenTest extends TestCase
         $this->commandTester->execute($options, $execOptions);
     }
 
+    /**
+     * @dataProvider keyTypesDataProvider
+     */
+    public function testInteractWithCommand(string $purpose): void
+    {
+        $answers = [
+            $purpose,
+            'audience_here',
+            'P01D',
+            '2021-03-22 13:37:42',
+            'spoody',
+            '',
+            'claim_a',
+            'value_a',
+            'claim_b',
+            'value_b',
+            '',
+            'footer_a',
+            'footer_b',
+        ];
+        $this->commandTester->setInputs($answers);
+        $execStatus = $this->commandTester->execute([]);
+        $this->assertEquals(Command::SUCCESS, $execStatus);
+        $output = explode("Footer key: (Enter to skip)", $this->commandTester->getDisplay());
+        $this->assertCount(3, $output);
+        $parsedToken = $this->getParser($purpose)->parse(trim($output[2], "\n"));
+        $claims = $parsedToken->getClaims();
+        $this->assertArrayHasKey('exp', $claims);
+        unset($claims['exp']);
+        $this->assertEquals([
+            'aud' => 'audience_here',
+            'iat' => '2021-03-22T13:37:42+00:00',
+            'iss' => 'spoody',
+            'claim_a' => 'value_a',
+            'claim_b' => 'value_b',
+        ], $claims);
+        $footer = $parsedToken->getFooterArray();
+        $this->assertEquals(['footer_a' => 'footer_b'], $footer);
+    }
+
     private function getParser(string $purpose): Parser
     {
         $parser = new Parser();
