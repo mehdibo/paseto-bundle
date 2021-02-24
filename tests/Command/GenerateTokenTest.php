@@ -22,6 +22,11 @@ class GenerateTokenTest extends TestCase
     private AsymmetricSecretKey $asymmetricSecretKey;
     private CommandTester $commandTester;
 
+    /**
+     * @var array<string , mixed>
+     */
+    private array $defaultExecOpts = ['interactive' => false];
+
     protected function setUp(): void
     {
         $this->symmetricKey = KeysFactory::symmetricKeyFactory(\random_bytes(32));
@@ -39,17 +44,15 @@ class GenerateTokenTest extends TestCase
 
     public function testCommandGeneratesToken(): void
     {
-        $this->assertEquals(Command::SUCCESS, $this->commandTester->execute([]));
+        $execOptions = \array_merge($this->defaultExecOpts, []);
+        $execStatus = $this->commandTester->execute([], $execOptions);
 
+        $this->assertEquals(Command::SUCCESS, $execStatus);
         $output = explode("\n", $this->commandTester->getDisplay());
         $this->assertCount(2, $output);
         $this->assertEmpty($output[1]);
 
-        $parsedToken = (new Parser())
-            ->setPurpose(Purpose::local())
-                ->setAllowedVersions(ProtocolCollection::v2())
-            ->setKey($this->symmetricKey)
-            ->parse($output[0]);
+        $parsedToken = $this->getParser('local')->parse($output[0]);
 
         $this->assertEmpty($parsedToken->getClaims());
     }
@@ -59,10 +62,12 @@ class GenerateTokenTest extends TestCase
      */
     public function testCommandGeneratesTokenWithPurpose(string $purpose): void
     {
+        $execOptions = \array_merge($this->defaultExecOpts, []);
         $options = [
             "--purpose" => $purpose,
         ];
-        $this->assertEquals(Command::SUCCESS, $this->commandTester->execute($options));
+        $execStatus = $this->commandTester->execute($options, $execOptions);
+        $this->assertEquals(Command::SUCCESS, $execStatus);
 
         $output = explode("\n", $this->commandTester->getDisplay());
         $this->assertCount(2, $output);
@@ -75,12 +80,13 @@ class GenerateTokenTest extends TestCase
 
     public function testCommandGeneratesTokenWithInvalidPurpose(): void
     {
+        $execOptions = \array_merge($this->defaultExecOpts, []);
         $options = [
             "--purpose" => "invalid_purpose"
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage("Purpose invalid, expected 'public' or 'local', found 'invalid_purpose'");
-        $this->assertEquals(Command::FAILURE, $this->commandTester->execute($options));
+        $this->commandTester->execute($options, $execOptions);
     }
 
     /**
@@ -88,11 +94,13 @@ class GenerateTokenTest extends TestCase
      */
     public function testCommandGeneratesTokenWithAudience(string $purpose): void
     {
+        $execOptions = \array_merge($this->defaultExecOpts, []);
         $options = [
             "--aud" => "audience_goes_here",
             "--purpose" => $purpose,
         ];
-        $this->assertEquals(Command::SUCCESS, $this->commandTester->execute($options));
+        $execStatus = $this->commandTester->execute($options, $execOptions);
+        $this->assertEquals(Command::SUCCESS, $execStatus);
 
         $output = explode("\n", $this->commandTester->getDisplay());
         $this->assertCount(2, $output);
@@ -108,11 +116,13 @@ class GenerateTokenTest extends TestCase
      */
     public function testCommandGeneratesTokenWithExpiration(string $purpose): void
     {
+        $execOptions = \array_merge($this->defaultExecOpts, []);
         $options = [
             "--expires_at" => "P01D",
             "--purpose" => $purpose,
         ];
-        $this->assertEquals(Command::SUCCESS, $this->commandTester->execute($options));
+        $execStatus = $this->commandTester->execute($options, $execOptions);
+        $this->assertEquals(Command::SUCCESS, $execStatus);
 
         $output = explode("\n", $this->commandTester->getDisplay());
         $this->assertCount(2, $output);
@@ -128,11 +138,13 @@ class GenerateTokenTest extends TestCase
      */
     public function testCommandGeneratesTokenWithIssuedAt(string $purpose): void
     {
+        $execOptions = \array_merge($this->defaultExecOpts, []);
         $options = [
             "--issued_at" => "2021-03-23 13:37:00",
             "--purpose" => $purpose,
         ];
-        $this->assertEquals(Command::SUCCESS, $this->commandTester->execute($options));
+        $execStatus = $this->commandTester->execute($options, $execOptions);
+        $this->assertEquals(Command::SUCCESS, $execStatus);
 
         $output = explode("\n", $this->commandTester->getDisplay());
         $this->assertCount(2, $output);
@@ -148,11 +160,13 @@ class GenerateTokenTest extends TestCase
      */
     public function testCommandGeneratesTokenWithIssuer(string $purpose): void
     {
+        $execOptions = \array_merge($this->defaultExecOpts, []);
         $options = [
             "--issuer" => "issuer_here",
             "--purpose" => $purpose,
         ];
-        $this->assertEquals(Command::SUCCESS, $this->commandTester->execute($options));
+        $execStatus = $this->commandTester->execute($options, $execOptions);
+        $this->assertEquals(Command::SUCCESS, $execStatus);
 
         $output = explode("\n", $this->commandTester->getDisplay());
         $this->assertCount(2, $output);
@@ -168,11 +182,13 @@ class GenerateTokenTest extends TestCase
      */
     public function testCommandGeneratesTokenWithJti(string $purpose): void
     {
+        $execOptions = \array_merge($this->defaultExecOpts, []);
         $options = [
             "--jti" => "jti_here",
             "--purpose" => $purpose,
         ];
-        $this->assertEquals(Command::SUCCESS, $this->commandTester->execute($options));
+        $execStatus = $this->commandTester->execute($options, $execOptions);
+        $this->assertEquals(Command::SUCCESS, $execStatus);
 
         $output = explode("\n", $this->commandTester->getDisplay());
         $this->assertCount(2, $output);
@@ -188,11 +204,13 @@ class GenerateTokenTest extends TestCase
      */
     public function testCommandGeneratesTokenWithClaims(string $purpose): void
     {
+        $execOptions = \array_merge($this->defaultExecOpts, []);
         $options = [
             "--claim" => ["key", "val", "key2", "val2"],
             "--purpose" => $purpose,
         ];
-        $this->assertEquals(Command::SUCCESS, $this->commandTester->execute($options));
+        $execStatus = $this->commandTester->execute($options, $execOptions);
+        $this->assertEquals(Command::SUCCESS, $execStatus);
 
         $output = explode("\n", $this->commandTester->getDisplay());
         $this->assertCount(2, $output);
@@ -208,13 +226,14 @@ class GenerateTokenTest extends TestCase
      */
     public function testCommandGeneratesTokenWithOddClaims(string $purpose): void
     {
+        $execOptions = \array_merge($this->defaultExecOpts, []);
         $options = [
             "--claim" => ["key", "val", "key2"],
             "--purpose" => $purpose,
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage("Invalid claims, number of flags must be a pair, 3 given");
-        $this->commandTester->execute($options);
+        $this->commandTester->execute($options, $execOptions);
     }
 
     /**
@@ -222,11 +241,13 @@ class GenerateTokenTest extends TestCase
      */
     public function testCommandGeneratesTokenWithFooter(string $purpose): void
     {
+        $execOptions = \array_merge($this->defaultExecOpts, []);
         $options = [
             "--footer" => ["key", "val", "key2", "val2"],
             "--purpose" => $purpose,
         ];
-        $this->assertEquals(Command::SUCCESS, $this->commandTester->execute($options));
+        $execStatus = $this->commandTester->execute($options, $execOptions);
+        $this->assertEquals(Command::SUCCESS, $execStatus);
 
         $output = explode("\n", $this->commandTester->getDisplay());
         $this->assertCount(2, $output);
@@ -242,13 +263,14 @@ class GenerateTokenTest extends TestCase
      */
     public function testCommandGeneratesTokenWithOddFooter(string $purpose): void
     {
+        $execOptions = \array_merge($this->defaultExecOpts, []);
         $options = [
             "--footer" => ["key", "val", "key2"],
             "--purpose" => $purpose,
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage("Invalid footer, number of flags must be a pair, 3 given");
-        $this->commandTester->execute($options);
+        $this->commandTester->execute($options, $execOptions);
     }
 
     private function getParser(string $purpose): Parser
