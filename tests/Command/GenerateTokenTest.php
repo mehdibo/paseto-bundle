@@ -58,7 +58,7 @@ class GenerateTokenTest extends TestCase
     }
 
     /**
-     * @dataProvider keyTypesDataProvider
+     * @dataProvider purposesDataProvider
      */
     public function testCommandGeneratesTokenWithPurpose(string $purpose): void
     {
@@ -90,7 +90,7 @@ class GenerateTokenTest extends TestCase
     }
 
     /**
-     * @dataProvider keyTypesDataProvider
+     * @dataProvider purposesDataProvider
      */
     public function testCommandGeneratesTokenWithAudience(string $purpose): void
     {
@@ -112,7 +112,7 @@ class GenerateTokenTest extends TestCase
     }
 
     /**
-     * @dataProvider keyTypesDataProvider
+     * @dataProvider purposesDataProvider
      */
     public function testCommandGeneratesTokenWithExpiration(string $purpose): void
     {
@@ -134,7 +134,7 @@ class GenerateTokenTest extends TestCase
     }
 
     /**
-     * @dataProvider keyTypesDataProvider
+     * @dataProvider purposesDataProvider
      */
     public function testCommandGeneratesTokenWithIssuedAt(string $purpose): void
     {
@@ -156,7 +156,7 @@ class GenerateTokenTest extends TestCase
     }
 
     /**
-     * @dataProvider keyTypesDataProvider
+     * @dataProvider purposesDataProvider
      */
     public function testCommandGeneratesTokenWithIssuer(string $purpose): void
     {
@@ -178,7 +178,7 @@ class GenerateTokenTest extends TestCase
     }
 
     /**
-     * @dataProvider keyTypesDataProvider
+     * @dataProvider purposesDataProvider
      */
     public function testCommandGeneratesTokenWithJti(string $purpose): void
     {
@@ -200,7 +200,7 @@ class GenerateTokenTest extends TestCase
     }
 
     /**
-     * @dataProvider keyTypesDataProvider
+     * @dataProvider purposesDataProvider
      */
     public function testCommandGeneratesTokenWithClaims(string $purpose): void
     {
@@ -222,7 +222,7 @@ class GenerateTokenTest extends TestCase
     }
 
     /**
-     * @dataProvider keyTypesDataProvider
+     * @dataProvider purposesDataProvider
      */
     public function testCommandGeneratesTokenWithOddClaims(string $purpose): void
     {
@@ -237,7 +237,7 @@ class GenerateTokenTest extends TestCase
     }
 
     /**
-     * @dataProvider keyTypesDataProvider
+     * @dataProvider purposesDataProvider
      */
     public function testCommandGeneratesTokenWithFooter(string $purpose): void
     {
@@ -259,7 +259,7 @@ class GenerateTokenTest extends TestCase
     }
 
     /**
-     * @dataProvider keyTypesDataProvider
+     * @dataProvider purposesDataProvider
      */
     public function testCommandGeneratesTokenWithOddFooter(string $purpose): void
     {
@@ -274,7 +274,7 @@ class GenerateTokenTest extends TestCase
     }
 
     /**
-     * @dataProvider keyTypesDataProvider
+     * @dataProvider purposesDataProvider
      */
     public function testInteractWithCommand(string $purpose): void
     {
@@ -325,7 +325,7 @@ class GenerateTokenTest extends TestCase
     /**
      * @return string[][]
      */
-    public function keyTypesDataProvider(): array
+    public function purposesDataProvider(): array
     {
         return [
             'Local purpose' => ['local'],
