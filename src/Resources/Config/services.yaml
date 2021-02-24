@@ -59,3 +59,7 @@ services:
   Mehdibo\Bundle\PasetoBundle\Command\GenerateToken:
     tags: [ 'console.command' ]
     arguments: ['@mehdibo_paseto.local_builder', '@mehdibo_paseto.public_builder']
+
+  Mehdibo\Bundle\PasetoBundle\Command\DecodeToken:
+    tags: [ 'console.command' ]
+    arguments: [ '@mehdibo_paseto.local_parser', '@mehdibo_paseto.public_parser' ]
