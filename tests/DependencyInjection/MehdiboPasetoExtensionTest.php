@@ -33,11 +33,11 @@ class MehdiboPasetoExtensionTest extends TestCase
         $this->assertTrue($this->container->hasParameter('mehdibo_paseto.secret_keys.symmetric_key'));
         $this->assertTrue($this->container->hasParameter('mehdibo_paseto.secret_keys.asymmetric_key'));
         $this->assertEquals(
-            hex2bin($key),
+            $key,
             $this->container->getParameter('mehdibo_paseto.secret_keys.symmetric_key')
         );
         $this->assertEquals(
-            hex2bin($key),
+            $key,
             $this->container->getParameter('mehdibo_paseto.secret_keys.asymmetric_key')
         );
     }

@@ -23,8 +23,8 @@ class DecodeTokenTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->symmetricKey = KeysFactory::symmetricKeyFactory(\random_bytes(32));
-        $this->asymmetricSecretKey = KeysFactory::asymmetricSecretKeyFactory(\sodium_crypto_sign_keypair());
+        $this->symmetricKey = KeysFactory::symmetricKeyFactory(\bin2hex(\random_bytes(32)));
+        $this->asymmetricSecretKey = KeysFactory::asymmetricSecretKeyFactory(\bin2hex(\sodium_crypto_sign_keypair()));
 
         $localParser = new LocalPasetoParser();
         $localParser->setKey($this->symmetricKey);

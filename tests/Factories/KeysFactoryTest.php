@@ -30,7 +30,7 @@ class KeysFactoryTest extends TestCase
             'drink_milk' => 'stronk_bonks'
         ];
 
-        $symmetricKey = KeysFactory::symmetricKeyFactory(\random_bytes(32));
+        $symmetricKey = KeysFactory::symmetricKeyFactory(\bin2hex(\random_bytes(32)));
 
         $this->assertInstanceOf(SymmetricKey::class, $symmetricKey);
 
@@ -53,7 +53,7 @@ class KeysFactoryTest extends TestCase
 
         $randomBytes = \sodium_crypto_sign_keypair();
 
-        $asymmetricSecretKey = KeysFactory::asymmetricSecretKeyFactory($randomBytes);
+        $asymmetricSecretKey = KeysFactory::asymmetricSecretKeyFactory(\bin2hex($randomBytes));
 
         $this->assertInstanceOf(AsymmetricSecretKey::class, $asymmetricSecretKey);
 
@@ -76,7 +76,7 @@ class KeysFactoryTest extends TestCase
 
         $randomBytes = \sodium_crypto_sign_keypair();
 
-        $asymmetricSecretKey = KeysFactory::asymmetricSecretKeyFactory($randomBytes);
+        $asymmetricSecretKey = KeysFactory::asymmetricSecretKeyFactory(\bin2hex($randomBytes));
         $asymmetricPublicKey = KeysFactory::asymmetricPublicKeyFactory($asymmetricSecretKey);
 
         $this->assertInstanceOf(AsymmetricPublicKey::class, $asymmetricPublicKey);
