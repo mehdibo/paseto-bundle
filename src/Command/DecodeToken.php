@@ -44,7 +44,7 @@ class DecodeToken extends Command
     private function getPurpose(string $rawToken): string
     {
         $parsed = explode(".", $rawToken);
-        if (count($parsed) !== 3 || !\in_array($parsed[1], ['local', 'public'])) {
+        if (!\in_array($parsed[1], ['local', 'public'])) {
             throw new InvalidArgumentException("Invalid token");
         }
         return $parsed[1];
@@ -59,13 +59,18 @@ class DecodeToken extends Command
         $purpose = $this->getPurpose($rawToken);
         $parser = ($purpose === 'local') ? $this->localParser : $this->publicParser;
         $parsedToken = $parser->parse($rawToken);
-        $output->writeln("Claims:");
-        foreach ($parsedToken->getClaims() as $key => $val) {
-            $output->writeln("{$key} => {$val}");
+        if (!empty($parsedToken->getClaims())) {
+            $output->writeln("Claims:");
+            foreach ($parsedToken->getClaims() as $key => $val) {
+                $output->writeln("{$key} => {$val}");
+            }
         }
+
         if ($parsedToken->getFooter() !== "") {
             $output->writeln("Footer:");
-            $output->writeln($parsedToken->getFooter());
+            foreach ($parsedToken->getFooterArray() as $key => $val) {
+                $output->writeln("{$key} => {$val}");
+            }
         }
         return Command::SUCCESS;
     }
