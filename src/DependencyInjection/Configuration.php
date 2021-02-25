@@ -44,56 +44,18 @@ final class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('secret_keys');
         /**
-         * @var NodeDefinition $node
+         * @var ArrayNodeDefinition $node
          */
         $node = $treeBuilder->getRootNode();
 
+        // TODO: add back validation
         $node->isRequired()
             ->children()
                 ->scalarNode('symmetric_key')
                     ->info('A HEX encoded key used for local Paseto tokens')
-                    ->validate()
-                        ->always(function ($value) {
-                            $paramKey = 'mehdibo_paseto.secret_keys.symmetric_key';
-                            $decoded = $this->validateKey($paramKey, $value);
-                            $keyLen = Binary::safeStrlen($decoded);
-                            if ($keyLen !== Version2::SYMMETRIC_KEY_BYTES) {
-                                throw new InvalidConfigurationException(
-                                    sprintf(
-                                        "'%s' must be %d bytes long, %d found",
-                                        $paramKey,
-                                        Version2::SYMMETRIC_KEY_BYTES,
-                                        $keyLen
-                                    )
-                                );
-                            }
-                            return $decoded;
-                        })
-                    ->end()
                 ->end()
                 ->scalarNode('asymmetric_key')
                     ->info('A HEX encoded key used for public Paseto tokens')
-                    ->validate()
-                    ->always(function ($value) {
-                        $paramKey = 'mehdibo_paseto.secret_keys.asymmetric_key';
-                        $decoded = $this->validateKey($paramKey, $value);
-                        $keyLen = Binary::safeStrlen($decoded);
-                        if ($keyLen !== \SODIUM_CRYPTO_SIGN_SECRETKEYBYTES &&
-                            $keyLen !== SODIUM_CRYPTO_SIGN_SEEDBYTES
-                        ) {
-                            throw new InvalidConfigurationException(
-                                sprintf(
-                                    "'%s' must be %d or %d bytes long, %d found",
-                                    $paramKey,
-                                    \SODIUM_CRYPTO_SIGN_SEEDBYTES,
-                                    \SODIUM_CRYPTO_SIGN_SECRETKEYBYTES,
-                                    $keyLen
-                                )
-                            );
-                        }
-                        return $decoded;
-                    })
-                    ->end()
                 ->end()
             ->end();
         return $node;
