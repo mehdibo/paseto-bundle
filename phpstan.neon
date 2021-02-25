@@ -1,0 +1,7 @@
+parameters:
+  level: 8
+  paths:
+    - src
+    - tests
+  ignoreErrors:
+    - '#Call to an undefined method [a-zA-Z0-9\\_]+NodeDefinition::children\(\)#' #TODO: figure out why this error shows
