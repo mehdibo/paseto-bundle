@@ -16,7 +16,7 @@
         "symfony-bundle"
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^7.4|^8.0|^8.1",
         "symfony/framework-bundle": "^5.2",
         "paragonie/paseto": "^1.1",
         "symfony/yaml": "^5.2",
