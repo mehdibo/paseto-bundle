@@ -49,6 +49,7 @@ final class Configuration implements ConfigurationInterface
         $node = $treeBuilder->getRootNode();
 
         // TODO: add back validation
+        // @phpstan-ignore-next-line
         $node->isRequired()
             ->children()
                 ->scalarNode('symmetric_key')
