@@ -11,44 +11,37 @@ services:
   mehdibo_paseto.local_parser:
     class: Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoParser
     factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\ParserFactory', 'localParser' ]
-    arguments:
-      $symmetricKey: "@mehdibo_paseto.symmetric_key"
+    arguments: ["@mehdibo_paseto.symmetric_key"]
 
   mehdibo_paseto.public_parser:
     class: Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoParser
     factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\ParserFactory', 'publicParser' ]
-    arguments:
-      $publicKey: "@mehdibo_paseto.asymmetric_public_key"
+    arguments: ["@mehdibo_paseto.asymmetric_public_key"]
 
   mehdibo_paseto.local_builder:
     class: Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoBuilder
     factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\PasetoBuilderFactory', 'localPasetoFactory' ]
-    arguments:
-      $symmetricKey: "@mehdibo_paseto.symmetric_key"
+    arguments: ["@mehdibo_paseto.symmetric_key"]
 
   mehdibo_paseto.public_builder:
     class: Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoBuilder
     factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\PasetoBuilderFactory', 'publicPasetoFactory' ]
-    arguments:
-      $asymmetricKey: "@mehdibo_paseto.asymmetric_secret_key"
+    arguments: ["@mehdibo_paseto.asymmetric_secret_key"]
 
   mehdibo_paseto.symmetric_key:
     class: ParagonIE\Paseto\Keys\SymmetricKey
     factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\KeysFactory', 'symmetricKeyFactory' ]
-    arguments:
-      $key: "%mehdibo_paseto.secret_keys.symmetric_key%"
+    arguments: ["%mehdibo_paseto.secret_keys.symmetric_key%"]
 
   mehdibo_paseto.asymmetric_secret_key:
     class: ParagonIE\Paseto\Keys\AsymmetricSecretKey
     factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\KeysFactory', 'asymmetricSecretKeyFactory' ]
-    arguments:
-      $key: "%mehdibo_paseto.secret_keys.asymmetric_key%"
+    arguments: ["%mehdibo_paseto.secret_keys.asymmetric_key%"]
 
   mehdibo_paseto.asymmetric_public_key:
     class: ParagonIE\Paseto\Keys\AsymmetricPublicKey
     factory: [ 'Mehdibo\Bundle\PasetoBundle\Factories\KeysFactory', 'asymmetricPublicKeyFactory' ]
-    arguments:
-      $asymmetricSecretKey: "@mehdibo_paseto.asymmetric_secret_key"
+    arguments: ["@mehdibo_paseto.asymmetric_secret_key"]
 
   Mehdibo\Bundle\PasetoBundle\Command\GenerateSymmetricKey:
     tags: ['console.command']

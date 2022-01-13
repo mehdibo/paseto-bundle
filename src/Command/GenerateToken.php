@@ -95,7 +95,6 @@ HELP
 
     private function createBuilder(InputInterface $input): Builder
     {
-        $builder = null;
         // Validate purpose
         /**
          * @var string $purpose
