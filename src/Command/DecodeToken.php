@@ -5,6 +5,7 @@ namespace Mehdibo\Bundle\PasetoBundle\Command;
 
 use Mehdibo\Bundle\PasetoBundle\Services\LocalPasetoParser;
 use Mehdibo\Bundle\PasetoBundle\Services\PublicPasetoParser;
+use ParagonIE\Paseto\Exception\PasetoException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -41,10 +42,13 @@ class DecodeToken extends Command
             );
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     */
     private function getPurpose(string $rawToken): string
     {
         $parsed = explode(".", $rawToken);
-        if (!\in_array($parsed[1], ['local', 'public'])) {
+        if (!isset($parsed[1]) || !\in_array($parsed[1], ['local', 'public'])) {
             throw new InvalidArgumentException("Invalid token");
         }
         return $parsed[1];
@@ -56,9 +60,25 @@ class DecodeToken extends Command
          * @var string $rawToken
          */
         $rawToken = $input->getArgument("token");
-        $purpose = $this->getPurpose($rawToken);
+        if (empty($rawToken)) {
+            $output->writeln("A token is required");
+            return Command::FAILURE;
+        }
+        try {
+            $purpose = $this->getPurpose($rawToken);
+        } catch (\InvalidArgumentException $e) {
+            $output->writeln($e->getMessage());
+            return Command::FAILURE;
+        }
         $parser = ($purpose === 'local') ? $this->localParser : $this->publicParser;
-        $parsedToken = $parser->parse($rawToken);
+
+        try {
+            $parsedToken = $parser->parse($rawToken);
+        } catch (\Exception $e) {
+            $output->writeln("Invalid token");
+            return Command::FAILURE;
+        }
+
         if (!empty($parsedToken->getClaims())) {
             $output->writeln("Claims:");
             foreach ($parsedToken->getClaims() as $key => $val) {
