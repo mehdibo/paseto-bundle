@@ -70,6 +70,16 @@ class DecodeTokenTest extends TestCase
     }
 
     /**
+     * @dataProvider invalidTokens
+     */
+    public function testDecodeTokenFails(string $token, string $errorMsg): void
+    {
+        $execStatus = $this->commandTester->execute(['token' => $token]);
+        $this->assertEquals(Command::FAILURE, $execStatus);
+        $this->assertStringContainsString($errorMsg, $this->commandTester->getDisplay());
+    }
+
+    /**
      * @return array<string, array<int, array<string, string>|string>>
      */
     public function tokensDataProvider(): array
@@ -104,7 +114,36 @@ class DecodeTokenTest extends TestCase
             }
         }
 
-
         return $testCases;
+    }
+
+    /**
+     * @return array<string, string[]>
+     */
+    public function invalidTokens()
+    {
+        return [
+            "empty token" => [
+                "",
+                 "A token is required",
+            ],
+            "invalid token version" => [
+                "0-0.local.non valid payload",
+                "Invalid token",
+            ],
+            // TODO: test with a token generated from a know secret and change the version/purpose
+            "invalid token purpose" => [
+                "v2.skippolama.mU8FlOXOufc7BADptTb5u0laBMgBCWtT8qH-H_8u1yimMSv8cK3K0OZ7",
+                "Invalid token",
+            ],
+            "invalid token payload" => [
+                "v2.local.non valid payload",
+                "Invalid token",
+            ],
+            "token from another secret" => [
+                "v2.local.mU8FlOXOufc7BADptTb5u0laBMgBCWtT8qH-H_8u1yimMSv8cK3K0OZ7",
+                "Invalid token",
+            ],
+        ];
     }
 }
