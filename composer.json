@@ -1,6 +1,6 @@
 {
     "name": "mehdibo/paseto-bundle",
-    "description": "A Bundle to use Paseto tokens",
+    "description": "A Symfony Bundle to use Paseto tokens",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
